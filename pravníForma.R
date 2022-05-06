@@ -1,3 +1,4 @@
+library(tidyverse)
 # Import ------------------------------------------------------------------
 import <- read.csv("~/Desktop/res_data.csv")
 #https://www.czso.cz/csu/czso/registr-ekonomickych-subjektu-otevrena-data
