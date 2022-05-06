@@ -1,7 +1,6 @@
 library(tidyverse)
 library(tmap)
 library(sf)
-library(extrafont)
 
 import <- read.csv("~/Desktop/res_data.csv")
 
@@ -28,6 +27,8 @@ okres_attorneys <- left_join(okres, attorney_okres, by = "KOD_LAU1")
 
 obce_attorneys$Advokáti <- replace_na(data = obce_attorneys$Advokáti, 0)
 
+#Adding the number of attorneys into the map, replacing NA data.
+
 korekce_x <- vector()
 korekce_x[1:77] <- 0
 korekce_x[28] <- 1 #Cheb
@@ -45,5 +46,6 @@ tm_shape(okres_attorneys) +
   tm_text(text = "Advokáti", size = 1, xmod=korekce_x, ymod=korekce_y) +
   tm_layout(main.title = "Počet advokátů podle okresu v ČR", main.title.position = "center", fontface = "bold", fontfamily = "sans", frame = FALSE)
 
+# Final Visualisation
 
 
