@@ -42,10 +42,11 @@ korekce_y[58] <- -1 #Brno-venkov
 
 tm_shape(okres_attorneys) +
   tm_borders() +
-  tm_fill(col = "Advokáti", style = "jenks", palette = "Blues", n = 7, legend.format = list(text.separator = "-"), legend.text.size = 10) +
+  tm_fill(col = "Advokáti", style = "jenks", palette = "Blues", n = 7, 
+          legend.format = list(text.separator = "-"), legend.text.size = 10) +
   tm_text(text = "Advokáti", size = 1, xmod=korekce_x, ymod=korekce_y) +
-  tm_layout(main.title = "Počet advokátů podle okresu v ČR", main.title.position = "center", fontface = "bold", fontfamily = "sans", frame = FALSE)
+  tm_layout(main.title = "Počet advokátů podle okresu v ČR", 
+            main.title.position = "center", fontface = "bold", 
+            fontfamily = "sans", frame = FALSE)
 
 # Final Visualisation
-
-
