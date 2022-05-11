@@ -70,7 +70,7 @@ def main():
         company_line = outputter(credentialize(retrieve(url_creator(identifier))))
         print(company_line)
         copy(company_line)
-        print('The company line has been copied to your clipboard.')
+        print('The company line has been copied to your clipboard. \n \n')
         n += 1
 
 
