@@ -30,38 +30,48 @@ def url_creator(identifier):
 def retrieve(url):
     webpage = requests.get(url)
     webpage = BeautifulSoup(webpage.content, 'html.parser')
-    webpage = etree.HTML(str(webpage))                      # etree is used because BS4 doesn't support XPath
+    webpage = etree.HTML(str(webpage))  # etree is used because BS4 doesn't support XPath
     return webpage
 
 
 # Uses XPath to return a dictionary of the relevant information.
 def credentialize(webpage):
-    credentials = {'address': webpage.xpath('//*[@id="idd"]/div/span/span')[0].text,
-                   'name': webpage.xpath('//*[@id="SearchResults"]/div[2]/div/ol/li/div/'
-                                         'table/tbody/tr[1]/td[1]/strong')[0].text,
-                   'ico': (webpage.xpath('//*[@id="SearchResults"]/div[2]/div/ol/li/div/'
-                                         'table/tbody/tr[1]/td[2]/strong/span/text()[1]')[0]) + " " +
-                          (webpage.xpath('//*[@id="SearchResults"]/div[2]/div/ol/li/div/'
-                                         'table/tbody/tr[1]/td[2]/strong/span/text()[2]')[0]) + " " +
-                          (webpage.xpath('//*[@id="SearchResults"]/div[2]/div/ol/li/div/'
-                                         'table/tbody/tr[1]/td[2]/strong/span/text()[3]')[0])}
+    try:
+        credentials = {'address': webpage.xpath('//*[@id="idd"]/div/span/span')[0].text,
+                       'name': webpage.xpath('//*[@id="SearchResults"]/div[2]/div/ol/li/div/'
+                                             'table/tbody/tr[1]/td[1]/strong')[0].text,
+                       'ico': (webpage.xpath('//*[@id="SearchResults"]/div[2]/div/ol/li/div/'
+                                             'table/tbody/tr[1]/td[2]/strong/span/text()[1]')[0]) + " " +
+                              (webpage.xpath('//*[@id="SearchResults"]/div[2]/div/ol/li/div/'
+                                             'table/tbody/tr[1]/td[2]/strong/span/text()[2]')[0]) + " " +
+                              (webpage.xpath('//*[@id="SearchResults"]/div[2]/div/ol/li/div/'
+                                             'table/tbody/tr[1]/td[2]/strong/span/text()[3]')[0])}
+    except IndexError:
+        return None
     return credentials
 
 
 # Pastes the relevant information into a format commonly used by lawyers.
 def outputter(credentials):
+    if credentials is None:
+        return "The company was not found."
     output = 'Společnost ' + credentials['name'] + ' se sídlem na adrese ' + credentials['address'] + ', IČ: ' + \
              credentials['ico'] + '.'
     return output
 
 
 def main():
-    print("Enter company name or identification number")
-    identifier = input()
-    company_line = outputter(credentialize(retrieve(url_creator(identifier))))
-    print(company_line)
-    copy(company_line)
-    print('The company line has been copied to your clipboard.')
+    n = 1
+    while True:
+        print("Enter company name or identification number. Q to exit. " + str(n))
+        identifier = input()
+        if identifier.lower() == 'q' or identifier.lower() == 'end':
+            break
+        company_line = outputter(credentialize(retrieve(url_creator(identifier))))
+        print(company_line)
+        copy(company_line)
+        print('The company line has been copied to your clipboard.')
+        n += 1
 
 
 main()
