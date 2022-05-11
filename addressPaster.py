@@ -63,7 +63,7 @@ def outputter(credentials):
 def main():
     n = 1
     while True:
-        print("Enter company name or identification number. Q to exit. " + str(n))
+        print('Enter company name or identification number. Q to exit. Iteration ' + str(n))
         identifier = input()
         if identifier.lower() == 'q' or identifier.lower() == 'end':
             break
