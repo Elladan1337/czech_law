@@ -2,10 +2,11 @@
 # Before running this script make sure to read the T&C of the Business Register website at:
 # https://or.justice.cz/ias/ui/podminky
 # It is forbidden to make more than 50 requests per minute, or 3000 requests per day.
-# This script is distributed under a AGPL-3.0 license.
+# This script is distributed under an AGPL-3.0 license.
 
 # Importing the necessary libraries
 import requests
+from clipboard import copy
 from lxml import etree
 from bs4 import BeautifulSoup
 
@@ -49,7 +50,7 @@ def credentialize(webpage):
 
 # Pastes the relevant information into a format commonly used by lawyers.
 def outputter(credentials):
-    output = 'Společnost ' + credentials['name'] + ' se sídlem na adrese ' + credentials['address'] + ' IČ: ' + \
+    output = 'Společnost ' + credentials['name'] + ' se sídlem na adrese ' + credentials['address'] + ', IČ: ' + \
              credentials['ico'] + '.'
     return output
 
@@ -57,7 +58,10 @@ def outputter(credentials):
 def main():
     print("Enter company name or identification number")
     identifier = input()
-    print(outputter(credentialize(retrieve(url_creator(identifier)))))
+    company_line = outputter(credentialize(retrieve(url_creator(identifier))))
+    print(company_line)
+    copy(company_line)
+    print('The company line has been copied to your clipboard.')
 
 
 main()
