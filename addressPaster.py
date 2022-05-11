@@ -1,5 +1,5 @@
 # IMPORTANT LEGAL WARNING
-# Before running this script makes sure read the T&C of the Business Register website at:
+# Before running this script make sure to read the T&C of the Business Register website at:
 # https://or.justice.cz/ias/ui/podminky
 # It is forbidden to make more than 50 requests per minute, or 3000 requests per day.
 # This script is distributed under a AGPL-3.0 license.
@@ -10,19 +10,18 @@ from lxml import etree
 from bs4 import BeautifulSoup
 
 
-def url_creator(identifier, kind):
-    if kind == "1":  # ICO
+def url_creator(identifier):
+
+    if identifier.isnumeric():  # ICO
         url = ('https://or.justice.cz/ias/ui/rejstrik-$firma?p%3A%3Asubmit=x&.%2Frejstrik-%24firma=&nazev=&ico=' +
                str(identifier) +
                '&obec=&ulice=&forma=&oddil=&vlozka=&soud=&polozek=50&typHledani=STARTS_WITH&jenPlatne=PLATNE'
                '&typHledaniSpolku=ALL')
-    elif kind == "2":  # Address
+    else:
         url = ('https://or.justice.cz/ias/ui/rejstrik-$firma?p%3A%3Asubmit=x&.%2Frejstrik-%24firma=&nazev=' +
                str(identifier) +
                '&ico=&obec=&ulice=&forma=&oddil=&vlozka=&soud=&polozek=50&typHledani=STARTS_WITH&jenPlatne=PLATNE'
                '&typHledaniSpolku=ALL')
-    else:
-        return "Invalid input"
     return url
 
 
@@ -53,11 +52,9 @@ def outputter(credentials):
 
 
 def main():
-    print("Input company identifier")
+    print("Input company name or identification number")
     identifier = input()
-    print("Press 1 for ICO, 2 for Name")
-    kind = input()
-    print(outputter(credentialize(retrieve(url_creator(identifier, kind)))))
+    print(outputter(credentialize(retrieve(url_creator(identifier)))))
 
 
 main()
